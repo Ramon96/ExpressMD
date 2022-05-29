@@ -10,6 +10,9 @@ router.post('/', async (req, res, next) => {
     const playlistName = req.body.name;
     const playlistSongs = req.body.songs;
 
+    console.log(playlistName);
+    console.log(playlistSongs);
+
     if(!playlistName || !playlistSongs) {
         res.status(400).send('Missing playlist name or songs');
         return;
@@ -50,6 +53,8 @@ router.post('/', async (req, res, next) => {
             });
           });
 
+          console.log(`Downloading ${file}`);
+
           return download;
         });
 
@@ -80,6 +85,8 @@ router.post('/', async (req, res, next) => {
         filteredSongs.forEach(song => {
           fs.unlinkSync(`./songs/${song}`);
         });
+
+        console.log('Done');
 
         // send the zip file to the client and remove it from the server
         res.download(`./songs/${playlistName}.zip`, `${playlistName}.zip`, () => {
